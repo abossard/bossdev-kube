@@ -45,7 +45,7 @@ resource "hcloud_server" "host" {
   name        = "${format(var.hostname_format, count.index + 1)}"
   image       = "${var.image}"
   server_type = "${var.type}"
-  ssh_keys = ["${hcloud_ssh_key.default.id}"]
+  ssh_keys = ["${var.ssh_keys}"]
 
   count = "${var.host_count}"
 
@@ -65,3 +65,19 @@ resource "hcloud_server" "host" {
   }
 }
 
+
+output "hostnames" {
+  value = ["${hcloud_server.host.*.name}"]
+}
+
+output "public_ips" {
+  value = ["${hcloud_server.host.*.ipv4_address}"]
+}
+
+output "private_ips" {
+  value = ["${hcloud_server.host.*.ipv4_address}"]
+}
+
+output "private_network_interface" {
+  value = "eth0"
+}
