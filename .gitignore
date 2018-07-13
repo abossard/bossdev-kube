@@ -1,0 +1,7 @@
+*.tfstate*
+.terraform/
+*.exe
+id_rsa*
+*.key
+*.ppk
+*.tfvars
