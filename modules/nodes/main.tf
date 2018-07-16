@@ -2,12 +2,12 @@ variable "token" {
   type="string"
 }
 
-variable "host_count" {
+variable "count" {
     default = 3
 }
 
 variable "hostname_format" {
-    default = "bossdev%03d"
+    default = "knode%03d"
 }
 
 variable "location" {
@@ -47,7 +47,7 @@ resource "hcloud_server" "host" {
   server_type = "${var.type}"
   ssh_keys = ["${var.ssh_keys}"]
 
-  count = "${var.host_count}"
+  count = "${var.count}"
 
   provisioner "remote-exec" {
       
