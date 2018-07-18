@@ -6,6 +6,8 @@ kubeadm init --config /tmp/master-configuration.yml \
 
 kubeadm token create ${token}
 
+kubeadm config images pull
+
 [ -d $HOME/.kube ] || mkdir -p $HOME/.kube
 ln -s /etc/kubernetes/admin.conf $HOME/.kube/config
 
@@ -13,6 +15,8 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:6443); d
   echo "Waiting for API server to respond"
   sleep 5
 done
+
+swapoff -a && sed -i '/swap/d' /etc/fstab
 
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
