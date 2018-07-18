@@ -42,6 +42,11 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     inline = [
       "echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf",
       "sysctl -p",
@@ -49,6 +54,11 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     inline = [
       "apt-get install -yq software-properties-common build-essential",
       "add-apt-repository -y ppa:wireguard/wireguard",
@@ -57,27 +67,57 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     script = "${path.module}/scripts/install_kernel_headers.sh"
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     inline = [
       "DEBIAN_FRONTEND=noninteractive apt-get install -yq wireguard-dkms wireguard-tools",
     ]
   }
 
   provisioner "file" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     content     = "${element(data.template_file.interface-conf.*.rendered, count.index)}"
     destination = "/etc/wireguard/${var.vpn_interface}.conf"
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     inline = [
       "chmod 700 /etc/wireguard/${var.vpn_interface}.conf",
     ]
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     inline = [
       "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", data.template_file.vpn_ips.*.rendered, var.hostnames))}",
       "systemctl is-enabled wg-quick@${var.vpn_interface} || systemctl enable wg-quick@${var.vpn_interface}",
@@ -86,11 +126,23 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "file" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     content     = "${element(data.template_file.overlay-route-service.*.rendered, count.index)}"
     destination = "/etc/systemd/system/overlay-route.service"
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+
     inline = [
       "systemctl start overlay-route.service",
       "systemctl is-enabled overlay-route.service || systemctl enable overlay-route.service",

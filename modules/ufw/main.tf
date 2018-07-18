@@ -34,6 +34,11 @@ resource "null_resource" "firewall" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     inline = <<EOF
 ${data.template_file.ufw.rendered}
 EOF

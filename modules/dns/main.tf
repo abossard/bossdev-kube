@@ -39,7 +39,7 @@ resource "cloudflare_record" "domain" {
 
 resource "cloudflare_record" "wildcard" {
     domain = "${var.domain}"
-    name = "$*"
+    name = "*"
     value = "${var.domain}"
     type = "CNAME"
     proxied = false

@@ -34,17 +34,35 @@ resource "null_resource" "etcd" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+    
     inline = <<EOF
 ${data.template_file.install.rendered}
 EOF
   }
 
   provisioner "file" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+    
     content     = "${element(data.template_file.etcd-service.*.rendered, count.index)}"
     destination = "/etc/systemd/system/etcd.service"
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+    
     inline = [
       "systemctl is-enabled etcd.service || systemctl enable etcd.service",
       "systemctl daemon-reload",

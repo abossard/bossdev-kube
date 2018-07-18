@@ -16,14 +16,6 @@ module "dns" {
     hostnames = "${module.provider.hostnames}"
 }
 
-module "swap" {
-  source = "./modules/swap"
-
-  count       = "${var.count}"
-  connections = "${module.provider.public_ips}"
-}
-
-
 module "firewall" {
   source = "./modules/ufw"
 

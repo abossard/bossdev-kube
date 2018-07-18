@@ -35,12 +35,6 @@ variable "apt_packages" {
   default = []
 }
 
-resource "hcloud_ssh_key" "default" {
-  name = "PC Key"
-  public_key = "${file("~/.ssh/id_rsa.pub")}"
-}
-
-
 resource "hcloud_server" "host" {
   name        = "${format(var.hostname_format, count.index + 1)}"
   image       = "${var.image}"

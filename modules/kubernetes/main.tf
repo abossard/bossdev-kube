@@ -34,6 +34,12 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+    
     inline = [
       "apt-get install -qy jq",
       "modprobe br_netfilter && echo br_netfilter >> /etc/modules",
@@ -41,26 +47,52 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
+    
     inline = ["[ -d /etc/systemd/system/docker.service.d ] || mkdir -p /etc/systemd/system/docker.service.d"]
   }
 
   provisioner "file" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     content     = "${file("${path.module}/templates/10-docker-opts.conf")}"
     destination = "/etc/systemd/system/docker.service.d/10-docker-opts.conf"
   }
 
   provisioner "file" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     content     = "${data.template_file.master-configuration.rendered}"
     destination = "/tmp/master-configuration.yml"
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     inline = <<EOF
   ${element(data.template_file.install.*.rendered, count.index)}
   EOF
   }
 
   provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "root"
+        private_key = "${file("~/.ssh/id_rsa")}"
+    }
     inline = <<EOF
 ${count.index == 0 ? data.template_file.master.rendered : data.template_file.slave.rendered}
 EOF
