@@ -1,25 +1,25 @@
 variable "token" {
-  type="string"
+  type = "string"
 }
 
 variable "count" {
-    default = 3
+  default = 3
 }
 
 variable "hostname_format" {
-    default = "knode%03d"
+  default = "knode%03d"
 }
 
 variable "location" {
-    default = "scheisse"
+  default = "scheisse"
 }
 
 variable "type" {
-    default = "cx11"
+  default = "cx11"
 }
 
 variable "image" {
-    default = "ubuntu-18.04"
+  default = "ubuntu-16.04"
 }
 
 variable "ssh_keys" {
@@ -39,18 +39,17 @@ resource "hcloud_server" "host" {
   name        = "${format(var.hostname_format, count.index + 1)}"
   image       = "${var.image}"
   server_type = "${var.type}"
-  ssh_keys = ["${var.ssh_keys}"]
+  ssh_keys    = ["${var.ssh_keys}"]
 
   count = "${var.count}"
 
   provisioner "remote-exec" {
-      
     connection {
-        type     = "ssh"
-        user     = "root"
-        private_key = "${file("~/.ssh/id_rsa")}"
+      type        = "ssh"
+      user        = "root"
+      private_key = "${file("~/.ssh/id_rsa")}"
     }
-    
+
     inline = [
       "while fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do sleep 1; done",
       "apt-get update && apt-get upgrade -y",
@@ -58,7 +57,6 @@ resource "hcloud_server" "host" {
     ]
   }
 }
-
 
 output "hostnames" {
   value = ["${hcloud_server.host.*.name}"]

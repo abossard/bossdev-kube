@@ -9,6 +9,6 @@ EOF
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable"
 
 apt-get update 
-apt-get install -y docker-ce=$(apt-cache madison docker-ce | grep 17.03 | head -1 | awk '{print $3}')
+apt install -y docker-ce=$(apt-cache madison docker-ce | grep 17.03 | head -1 | awk '{print $3}')
 apt-get install -y kubelet kubeadm kubectl kubernetes-cni
 systemctl enable docker.service
