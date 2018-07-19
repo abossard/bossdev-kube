@@ -19,4 +19,22 @@ domain = "superdomain.com"
 host_count = 3
 ```
 
-## 2. Preparting Terraform
+
+## 2. Required tools
+Some of the commands are executed locally to generate keys and configs for the nodes. That's why you need these tools installed:
+- `kubectl`
+- `wg` (wireguard cli)
+- `jq`
+
+It doesn't work without it. So forget to run this on Windows.
+
+## 3. Preparing Terraform
+```
+terraform init
+terraform plan -var-file=.tfvars
+terraform apply -var-file=.tfvars
+```
+
+## 4. Wait
+
+## 5. Enjoy `kubectl get nodes`
