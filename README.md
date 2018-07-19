@@ -1,5 +1,5 @@
 # Kubernetes Cluster with Terraform
-Loosely based on the hobby-kube guide.
+Based on https://github.com/hobby-kube/guide
 
 # Getting Started
 ## 1. Preparing the Config
@@ -38,3 +38,4 @@ terraform apply -var-file=.tfvars
 ## 4. Wait
 
 ## 5. Enjoy `kubectl get nodes`
+
