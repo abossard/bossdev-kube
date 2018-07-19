@@ -1,4 +1,4 @@
-variable "count" {
+variable "host_count" {
   default = 3
 }
 
