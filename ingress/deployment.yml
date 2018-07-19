@@ -117,4 +117,4 @@ spec:
       - path: /
         backend:
           serviceName: default-http-backend
-          servicePort: 80
+          servicePort: http
